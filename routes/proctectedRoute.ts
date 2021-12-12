@@ -11,6 +11,8 @@ module.exports = function (request: any, response: any, next: any) {
     const verifyToken = jwt.verify(getToken, process.env.TOKEN_SERCRET);
 
     request.user = verifyToken;
+
+    next();
   } catch (err) {
     if (err) {
       console.log(err);
