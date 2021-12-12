@@ -1,29 +1,20 @@
 const router = require("express").Router();
 const User = require("../model/user/user");
+// const { loginValidation, registerValidation } = require("../utils/validation");
 
-// Validation
-const Joi = require("joi");
-
-/*
-*
-*
-*
-  //TODO : Fix validation
-const schemaValidation = Joi.object({
-  name: Joi.string().min(6).required(),
-  email: Joi.string().min(8).required().email(),
-  password: Joi.string().min(6).required(),
-});
-*
-*
-*/
 router.post("/register", async (request: any, response: any) => {
-  console.log("types check ", response);
   //TODO : Fix validation
-  // const validaitonCheck = Joi.validaiton(request.body);
-
-  //TODO : Fix validation
+  // const {error} = registerValidation(request.body)
   //response.send(validaitonCheck);
+
+  // check user registred user is in DB
+  const userExist = await User.findOne({
+    email: request.body.email,
+  });
+
+  if (userExist) {
+    return response.status(400).send("User email already exists");
+  }
 
   const user = new User({
     name: request.body.name,
